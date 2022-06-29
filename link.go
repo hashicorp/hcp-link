@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net"
 	"sync"
+
+	"github.com/hashicorp/hcp-link/pkg/config"
 )
 
 const (
@@ -15,7 +17,7 @@ const (
 type link struct {
 	// Config contains all dependencies as well as information about the node Link is
 	// running on.
-	*Config
+	*config.Config
 
 	// listener is the listener of the Link SCADA capability.
 	listener net.Listener
@@ -27,7 +29,7 @@ type link struct {
 
 // New creates a new instance of a Link interface, that allows access to
 // functionality of linked HCP services.
-func New(config *Config) (Link, error) {
+func New(config *config.Config) (Link, error) {
 	if config == nil {
 		return nil, fmt.Errorf("failed to initialize link library: config must be provided")
 	}

@@ -11,7 +11,13 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/hashicorp/hcp-sdk-go/clients/cloud-shared/v1/models"
+
+	"github.com/hashicorp/hcp-link/pkg/config"
 )
+
+type stubHCPConfig struct {
+	sdk.HCPConfig
+}
 
 func TestLink(t *testing.T) {
 	t.Run("Link library initialization fails if no config is provided", func(t *testing.T) {
@@ -22,7 +28,7 @@ func TestLink(t *testing.T) {
 	})
 
 	t.Run("Link library initialization succeeds when a valid config is passed", func(t *testing.T) {
-		link, err := New(&Config{
+		link, err := New(&config.Config{
 			NodeID:      "Node ID",
 			NodeVersion: "0.0.0",
 			Resource: models.HashicorpCloudLocationLink{
@@ -48,7 +54,7 @@ func TestLink(t *testing.T) {
 		expectedNodeID := "IDToExpect"
 		scadaProvider := idleSCADAProvider()
 
-		givenLink, err := New(&Config{
+		givenLink, err := New(&config.Config{
 			NodeID:      expectedNodeID,
 			NodeVersion: expectedNodeVersion,
 			Resource: models.HashicorpCloudLocationLink{
