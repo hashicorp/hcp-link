@@ -9,6 +9,7 @@ import (
 	sdk "github.com/hashicorp/hcp-sdk-go/config"
 
 	"github.com/hashicorp/hcp-link/internal/resource"
+	"github.com/hashicorp/hcp-link/pkg/nodestatus"
 )
 
 // Config contains information about the node, the linked resource and the SCADA connection.
@@ -29,6 +30,10 @@ type Config struct {
 	// HCPConfig is the HCP specific configuration, it provides information
 	// necessary to talk to HCP APIs.
 	HCPConfig sdk.HCPConfig
+
+	// NodeStatusReporter is used as a callback to retrieve the node's current
+	// status information.
+	NodeStatusReporter nodestatus.Reporter
 
 	// ScadaProvider is a SCADA provider that is registered on HCP's SCADA broker.
 	ScadaProvider scada.SCADAProvider

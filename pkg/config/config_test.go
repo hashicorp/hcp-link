@@ -20,9 +20,9 @@ type stubSCADAProvider struct {
 
 func validConfig() *Config {
 	return &Config{
-		"node-id",
-		"0.0.1",
-		cloud.HashicorpCloudLocationLink{
+		NodeID:      "node-id",
+		NodeVersion: "0.0.1",
+		Resource: cloud.HashicorpCloudLocationLink{
 			ID:   "resource-id",
 			Type: "hashicorp.test.resource",
 			Location: &cloud.HashicorpCloudLocationLocation{
@@ -30,9 +30,9 @@ func validConfig() *Config {
 				ProjectID:      "c0a38947-7c11-4038-9cf6-2657a2c67cac",
 			},
 		},
-		stubHCPConfig{},
-		&stubSCADAProvider{},
-		hclog.NewNullLogger(),
+		HCPConfig:     stubHCPConfig{},
+		ScadaProvider: &stubSCADAProvider{},
+		Logger:        hclog.NewNullLogger(),
 	}
 }
 
