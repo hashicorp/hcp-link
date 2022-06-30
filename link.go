@@ -5,6 +5,10 @@ import (
 	"net"
 	"sync"
 
+	"google.golang.org/grpc"
+
+	linkstatuspb "github.com/hashicorp/hcp-link/gen/proto/go/hashicorp/cloud/hcp_link/link_status/v1"
+	linkstatusinternal "github.com/hashicorp/hcp-link/internal/linkstatus"
 	"github.com/hashicorp/hcp-link/pkg/config"
 )
 
@@ -21,6 +25,9 @@ type link struct {
 
 	// listener is the listener of the Link SCADA capability.
 	listener net.Listener
+
+	// grpcServer is the gRPC server of the Link SCADA capability.
+	grpcServer *grpc.Server
 
 	// running is set true if Link is running
 	running     bool
@@ -60,9 +67,20 @@ func (l *link) Start() error {
 	if err != nil {
 		return fmt.Errorf("failed to start listening on the %q capability: %w", capabilityLink, err)
 	}
-
-	// TODO: Handle requests
 	l.listener = listener
+
+	// Setup gRPC server
+	l.grpcServer = grpc.NewServer()
+
+	// Handle LinkStatus requests
+	linkstatuspb.RegisterLinkStatusServiceServer(l.grpcServer, &linkstatusinternal.Service{
+		Config: l.Config,
+	})
+
+	// Start the gRPC server
+	go func() {
+		_ = l.grpcServer.Serve(listener)
+	}()
 
 	// Mark Link as running
 	l.running = true
@@ -85,6 +103,9 @@ func (l *link) Stop() error {
 	// Clear Link specific meta-data
 	l.ScadaProvider.SetMetaValue(metaDataNodeId, "")
 	l.ScadaProvider.SetMetaValue(metaDataNodeVersion, "")
+
+	// Stop the gRPC server
+	l.grpcServer.Stop()
 
 	// Stop listening on the Link capability
 	err := l.listener.Close()

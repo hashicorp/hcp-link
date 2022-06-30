@@ -7,15 +7,16 @@ require (
 	github.com/hashicorp/go-hclog v1.2.1
 	github.com/hashicorp/hcp-sdk-go v0.19.1-0.20220622092037-0cc7d3a5b743
 	github.com/stretchr/testify v1.7.2
+	google.golang.org/grpc v1.47.0
 )
 
 require (
-	github.com/google/go-cmp v0.5.6 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-msgpack v1.1.5 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/net-rpc-msgpackrpc v0.0.0-20151116020338-a14192a58a69 // indirect
 	github.com/hashicorp/yamux v0.0.0-20211028200310-0bc27b27de87 // indirect
+	google.golang.org/genproto v0.0.0-20200825200019-8632dd797987 // indirect
 )
 
 require (
@@ -35,7 +36,7 @@ require (
 	github.com/go-openapi/swag v0.19.14 // indirect
 	github.com/go-openapi/validate v0.20.2 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golang/protobuf v1.5.2
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/hcp-scada-provider v0.0.0-20220622120244-d8bf2e995a60
 	github.com/josharian/intern v1.0.0 // indirect
