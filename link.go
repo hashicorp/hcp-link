@@ -8,7 +8,9 @@ import (
 	"google.golang.org/grpc"
 
 	linkstatuspb "github.com/hashicorp/hcp-link/gen/proto/go/hashicorp/cloud/hcp_link/link_status/v1"
+	nodestatuspb "github.com/hashicorp/hcp-link/gen/proto/go/hashicorp/cloud/hcp_link/node_status/v1"
 	linkstatusinternal "github.com/hashicorp/hcp-link/internal/linkstatus"
+	nodestatusinternal "github.com/hashicorp/hcp-link/internal/nodestatus"
 	"github.com/hashicorp/hcp-link/pkg/config"
 )
 
@@ -76,6 +78,13 @@ func (l *link) Start() error {
 	linkstatuspb.RegisterLinkStatusServiceServer(l.grpcServer, &linkstatusinternal.Service{
 		Config: l.Config,
 	})
+
+	// Handle NodeStatus requests, if a node status reporter has been registered
+	if l.NodeStatusReporter != nil {
+		nodestatuspb.RegisterNodeStatusServiceServer(l.grpcServer, &nodestatusinternal.Service{
+			Config: l.Config,
+		})
+	}
 
 	// Start the gRPC server
 	go func() {
