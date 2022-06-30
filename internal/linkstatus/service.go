@@ -20,9 +20,14 @@ type Service struct {
 }
 
 // GetLinkStatus will be used to fetch the node’s link specific status.
-func (s *Service) GetLinkStatus(ctx context.Context, _ *pb.GetLinkStatusRequest) (*pb.GetLinkStatusResponse, error) {
+func (s *Service) GetLinkStatus(_ context.Context, _ *pb.GetLinkStatusRequest) (*pb.GetLinkStatusResponse, error) {
 	return &pb.GetLinkStatusResponse{
 		NodeId:  s.NodeID,
 		Version: linkStatusVersion,
+		Features: &pb.Features{
+			NodeStatusReporting: &pb.FeatureNodeStatusReporting{
+				Enabled: s.NodeStatusReporter != nil,
+			},
+		},
 	}, nil
 }
