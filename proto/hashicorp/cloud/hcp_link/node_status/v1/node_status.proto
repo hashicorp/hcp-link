@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package hashicorp.cloud.hcp_link.node_status.v1;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+
+service NodeStatusService {
+  // GetNodeStatus will be used to regularly fetch the node’s current status.
+  rpc GetNodeStatus(GetNodeStatusRequest) returns (GetNodeStatusResponse);
+}
+
+// GetNodeStatusRequest is empty for now as GetNodeStatus does not expect any
+// arguments.
+message GetNodeStatusRequest{}
+
+// GetNodeStatusResponse contains information about the node's current status
+// the status is a combination of common status information and product specific
+// status information.
+message GetNodeStatusResponse {
+  // node_id is the ID assigned to the node. It is expected to unique within the
+  // link resource (e.g. within the cluster).
+  string node_id = 1;
+
+  // node_version is the node's version in semantic version format.
+  string node_version = 2;
+
+  // node_os is the lower-case name of the operating system the client is
+  // running on (e.g. linux, windows).
+  string node_os = 3;
+
+  // node_architecture is the lower-case architecture of the client binary
+  // (e.g. amd64, arm, ...).
+  string node_architecture = 4;
+
+  // timestamp is the time the status was recorded on the node.
+  google.protobuf.Timestamp timestamp = 5;
+
+  // status_version is the version of the status message format. To ensure
+  // that the version is not omitted by accident the initial version is 1.
+  uint32 status_version = 6;
+
+  // status is the product specific status of the node. The link library and
+  // service is agnostic to the information transmitted in this field.
+  google.protobuf.Any status = 7;
+}
