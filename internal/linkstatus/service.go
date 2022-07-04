@@ -14,7 +14,7 @@ const (
 type Service struct {
 	// Config contains all dependencies as well as information about the node
 	// Link is running on.
-	*config.Config
+	Config *config.Config
 
 	pb.UnimplementedLinkStatusServiceServer
 }
@@ -22,11 +22,11 @@ type Service struct {
 // GetLinkStatus will be used to fetch the node’s link specific status.
 func (s *Service) GetLinkStatus(_ context.Context, _ *pb.GetLinkStatusRequest) (*pb.GetLinkStatusResponse, error) {
 	return &pb.GetLinkStatusResponse{
-		NodeId:  s.NodeID,
+		NodeId:  s.Config.NodeID,
 		Version: linkStatusVersion,
 		Features: &pb.Features{
 			NodeStatusReporting: &pb.FeatureNodeStatusReporting{
-				Enabled: s.NodeStatusReporter != nil,
+				Enabled: s.Config.NodeStatusReporter != nil,
 			},
 		},
 	}, nil

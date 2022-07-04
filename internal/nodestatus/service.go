@@ -16,7 +16,7 @@ import (
 type Service struct {
 	// Config contains all dependencies as well as information about the node
 	// Link is running on.
-	*config.Config
+	Config *config.Config
 
 	pb.UnimplementedNodeStatusServiceServer
 }
@@ -26,12 +26,12 @@ func (s *Service) GetNodeStatus(ctx context.Context, _ *pb.GetNodeStatusRequest)
 	// Return an error if s.NodeStatusReporter is not set. This should ideally
 	// not happen as the service should only be registered when a node status
 	// reporter is available.
-	if s.NodeStatusReporter == nil {
+	if s.Config.NodeStatusReporter == nil {
 		return nil, status.Error(codes.NotFound, "no node status reporter has been registered")
 	}
 
 	// Get the node's status
-	currentStatus, err := s.NodeStatusReporter.GetNodeStatus(ctx)
+	currentStatus, err := s.Config.NodeStatusReporter.GetNodeStatus(ctx)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get current node status: %v", err)
 	}
@@ -44,8 +44,8 @@ func (s *Service) GetNodeStatus(ctx context.Context, _ *pb.GetNodeStatusRequest)
 
 	// Collect all information and return them
 	return &pb.GetNodeStatusResponse{
-		NodeId:           s.NodeID,
-		NodeVersion:      s.NodeVersion,
+		NodeId:           s.Config.NodeID,
+		NodeVersion:      s.Config.NodeVersion,
 		NodeOs:           runtime.GOOS,
 		NodeArchitecture: runtime.GOARCH,
 		Timestamp:        timestamppb.Now(),
