@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package hashicorp.cloud.hcp_link.link_status.v1;
+
+service LinkStatusService {
+  // GetLinkStatus will be used to fetch the node’s link specific status.
+  rpc GetLinkStatus(GetLinkStatusRequest) returns (GetLinkStatusResponse);
+}
+
+// GetLinkStatusRequest is empty for now as GetLinkStatus does not expect any
+// arguments.
+message GetLinkStatusRequest{}
+
+// GetLinkStatusResponse contains information about the Link's status. The
+// information will be used by the Link service to know the capabilities of the
+// Link node and to e.g. enable/disable workflows like polling the node's
+// status.
+message GetLinkStatusResponse {
+  // node_id is the ID assigned to the node. It is expected to unique within the
+  // link resource (e.g. within the cluster).
+  string node_id = 1;
+
+  // version is the HCP Link library's version in semantic version format.
+  string version = 2;
+
+  // features are used to configure optional functionality.
+  Features features = 3;
+}
+
+// Features are all optional functionality that may be provided by a node.
+message Features {
+  // node_status_reporting is used to configure node status reporting.
+  FeatureNodeStatusReporting node_status_reporting = 1;
+}
+
+// FeatureNodeStatusReporting configures a feature that allows HCP to poll
+// status information from the node.
+message FeatureNodeStatusReporting {
+  // enabled can be used to toggle the node status reporting feature. If true
+  // HCP will regularly retrieve and store the node's status.
+  bool enabled = 1;
+}
+

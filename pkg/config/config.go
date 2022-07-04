@@ -1,4 +1,4 @@
-package link
+package config
 
 import (
 	"fmt"
@@ -9,6 +9,7 @@ import (
 	sdk "github.com/hashicorp/hcp-sdk-go/config"
 
 	"github.com/hashicorp/hcp-link/internal/resource"
+	"github.com/hashicorp/hcp-link/pkg/nodestatus"
 )
 
 // Config contains information about the node, the linked resource and the SCADA connection.
@@ -30,8 +31,12 @@ type Config struct {
 	// necessary to talk to HCP APIs.
 	HCPConfig sdk.HCPConfig
 
-	// ScadaProvider is a SCADA provider that is registered on HCP's SCADA broker.
-	ScadaProvider scada.SCADAProvider
+	// NodeStatusReporter is used as a callback to retrieve the node's current
+	// status information.
+	NodeStatusReporter nodestatus.Reporter
+
+	// SCADAProvider is a SCADA provider that is registered on HCP's SCADA broker.
+	SCADAProvider scada.SCADAProvider
 
 	// Logger is HCLog Logger instance that will be used to log debug information.
 	Logger hclog.Logger
@@ -53,7 +58,7 @@ func (c *Config) Validate() error {
 	if c.HCPConfig == nil {
 		return fmt.Errorf("HCP config must be provided")
 	}
-	if c.ScadaProvider == nil {
+	if c.SCADAProvider == nil {
 		return fmt.Errorf("SCADA provider must be provided")
 	}
 	if c.Logger == nil {
