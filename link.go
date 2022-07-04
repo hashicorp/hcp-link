@@ -61,11 +61,11 @@ func (l *link) Start() error {
 	}
 
 	// Configure Link specific meta-data
-	l.ScadaProvider.SetMetaValue(metaDataNodeId, l.NodeID)
-	l.ScadaProvider.SetMetaValue(metaDataNodeVersion, l.NodeVersion)
+	l.SCADAProvider.SetMetaValue(metaDataNodeId, l.NodeID)
+	l.SCADAProvider.SetMetaValue(metaDataNodeVersion, l.NodeVersion)
 
 	// Start listening on Link capability
-	listener, err := l.ScadaProvider.Listen(capabilityLink)
+	listener, err := l.SCADAProvider.Listen(capabilityLink)
 	if err != nil {
 		return fmt.Errorf("failed to start listening on the %q capability: %w", capabilityLink, err)
 	}
@@ -110,8 +110,8 @@ func (l *link) Stop() error {
 	}
 
 	// Clear Link specific meta-data
-	l.ScadaProvider.SetMetaValue(metaDataNodeId, "")
-	l.ScadaProvider.SetMetaValue(metaDataNodeVersion, "")
+	l.SCADAProvider.SetMetaValue(metaDataNodeId, "")
+	l.SCADAProvider.SetMetaValue(metaDataNodeVersion, "")
 
 	// Stop the gRPC server
 	l.grpcServer.Stop()

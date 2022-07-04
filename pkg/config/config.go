@@ -35,8 +35,8 @@ type Config struct {
 	// status information.
 	NodeStatusReporter nodestatus.Reporter
 
-	// ScadaProvider is a SCADA provider that is registered on HCP's SCADA broker.
-	ScadaProvider scada.SCADAProvider
+	// SCADAProvider is a SCADA provider that is registered on HCP's SCADA broker.
+	SCADAProvider scada.SCADAProvider
 
 	// Logger is HCLog Logger instance that will be used to log debug information.
 	Logger hclog.Logger
@@ -58,7 +58,7 @@ func (c *Config) Validate() error {
 	if c.HCPConfig == nil {
 		return fmt.Errorf("HCP config must be provided")
 	}
-	if c.ScadaProvider == nil {
+	if c.SCADAProvider == nil {
 		return fmt.Errorf("SCADA provider must be provided")
 	}
 	if c.Logger == nil {

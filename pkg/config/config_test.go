@@ -31,7 +31,7 @@ func validConfig() *Config {
 			},
 		},
 		HCPConfig:     stubHCPConfig{},
-		ScadaProvider: &stubSCADAProvider{},
+		SCADAProvider: &stubSCADAProvider{},
 		Logger:        hclog.NewNullLogger(),
 	}
 }
@@ -78,7 +78,7 @@ func TestConfig_Invalid(t *testing.T) {
 		{
 			name: "missing SCADA Provider",
 			mutate: func(config *Config) {
-				config.ScadaProvider = nil
+				config.SCADAProvider = nil
 			},
 			expectedError: "SCADA provider must be provided",
 		},

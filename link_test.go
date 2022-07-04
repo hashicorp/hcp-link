@@ -40,7 +40,7 @@ func TestLink(t *testing.T) {
 				},
 			},
 			HCPConfig:     stubHCPConfig{},
-			ScadaProvider: idleSCADAProvider(),
+			SCADAProvider: idleSCADAProvider(),
 			Logger:        hclog.Default(),
 		})
 
@@ -66,7 +66,7 @@ func TestLink(t *testing.T) {
 				},
 			},
 			HCPConfig:     stubHCPConfig{},
-			ScadaProvider: scadaProvider,
+			SCADAProvider: scadaProvider,
 			Logger:        hclog.Default(),
 		})
 
