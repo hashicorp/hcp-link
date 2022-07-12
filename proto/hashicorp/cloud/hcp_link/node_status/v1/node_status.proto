@@ -14,10 +14,16 @@ service NodeStatusService {
 // arguments.
 message GetNodeStatusRequest{}
 
-// GetNodeStatusResponse contains information about the node's current status
-// the status is a combination of common status information and product specific
-// status information.
+// GetNodeStatusResponse contains information about the node's current status.
 message GetNodeStatusResponse {
+  // node_status contains information about the node's current status.
+  NodeStatus node_status = 1;
+}
+
+// NodeStatus contains information about the node's current status. The status
+// is a combination of common status information and product specific status
+// information.
+message NodeStatus {
   // node_id is the ID assigned to the node. It is expected to unique within the
   // link resource (e.g. within the cluster).
   string node_id = 1;
