@@ -50,15 +50,17 @@ func TestNodeStatusService_GetNodeStatus(t *testing.T) {
 	status, err := service.GetNodeStatus(context.Background(), nil)
 	require.NoError(err)
 
-	require.Equal(nodeID, status.NodeId)
-	require.Equal(nodeVersion, status.NodeVersion)
-	require.Equal(runtime.GOOS, status.NodeOs)
-	require.Equal(runtime.GOARCH, status.NodeArchitecture)
-	require.NotEmpty(status.Timestamp)
-	require.Equal(statusVersion, status.StatusVersion)
+	nodeStatus := status.NodeStatus
+
+	require.Equal(nodeID, nodeStatus.NodeId)
+	require.Equal(nodeVersion, nodeStatus.NodeVersion)
+	require.Equal(runtime.GOOS, nodeStatus.NodeOs)
+	require.Equal(runtime.GOARCH, nodeStatus.NodeArchitecture)
+	require.NotEmpty(nodeStatus.Timestamp)
+	require.Equal(statusVersion, nodeStatus.StatusVersion)
 
 	resultStatusMessage := &structpb.Value{}
-	err = anypb.UnmarshalTo(status.Status, resultStatusMessage, proto.UnmarshalOptions{})
+	err = anypb.UnmarshalTo(nodeStatus.Status, resultStatusMessage, proto.UnmarshalOptions{})
 	require.NoError(err)
 
 	require.Equal(statusMessage.String(), resultStatusMessage.String())

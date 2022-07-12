@@ -44,12 +44,14 @@ func (s *Service) GetNodeStatus(ctx context.Context, _ *pb.GetNodeStatusRequest)
 
 	// Collect all information and return them
 	return &pb.GetNodeStatusResponse{
-		NodeId:           s.Config.NodeID,
-		NodeVersion:      s.Config.NodeVersion,
-		NodeOs:           runtime.GOOS,
-		NodeArchitecture: runtime.GOARCH,
-		Timestamp:        timestamppb.Now(),
-		StatusVersion:    currentStatus.StatusVersion,
-		Status:           anyStatus,
+		NodeStatus: &pb.NodeStatus{
+			NodeId:           s.Config.NodeID,
+			NodeVersion:      s.Config.NodeVersion,
+			NodeOs:           runtime.GOOS,
+			NodeArchitecture: runtime.GOARCH,
+			Timestamp:        timestamppb.Now(),
+			StatusVersion:    currentStatus.StatusVersion,
+			Status:           anyStatus,
+		},
 	}, nil
 }
