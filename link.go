@@ -17,7 +17,10 @@ import (
 const (
 	metaDataNodeId      = "link.node_id"
 	metaDataNodeVersion = "link.node_version"
-	capabilityLink      = "link"
+
+	// Capability defines the name of the SCADA capability that is used to expose
+	// the Link status and node status gRPC services.
+	Capability = "link"
 )
 
 type link struct {
@@ -65,9 +68,9 @@ func (l *link) Start() error {
 	l.SCADAProvider.SetMetaValue(metaDataNodeVersion, l.NodeVersion)
 
 	// Start listening on Link capability
-	listener, err := l.SCADAProvider.Listen(capabilityLink)
+	listener, err := l.SCADAProvider.Listen(Capability)
 	if err != nil {
-		return fmt.Errorf("failed to start listening on the %q capability: %w", capabilityLink, err)
+		return fmt.Errorf("failed to start listening on the %q capability: %w", Capability, err)
 	}
 	l.listener = listener
 
@@ -119,7 +122,7 @@ func (l *link) Stop() error {
 	// Stop listening on the Link capability
 	err := l.listener.Close()
 	if err != nil {
-		return fmt.Errorf("failed to close listener for %q capability: %w", capabilityLink, err)
+		return fmt.Errorf("failed to close listener for %q capability: %w", Capability, err)
 	}
 
 	// Reset listener
