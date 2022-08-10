@@ -50,3 +50,8 @@ message NodeStatus {
   // service is agnostic to the information transmitted in this field.
   google.protobuf.Any status = 7;
 }
+
+message SetNodeStatusRequest {
+  // node_status is the current status of the node.
+  hashicorp.cloud.hcp_link.node_status.v1.NodeStatus node_status = 2;
+}
