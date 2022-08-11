@@ -1,10 +1,18 @@
 package link
 
 import (
+	"bytes"
+	"context"
 	"fmt"
 	"net"
+	"net/http"
+	"net/url"
+	"path"
 	"sync"
 
+	"github.com/golang/protobuf/proto"
+	"github.com/hashicorp/go-cleanhttp"
+	"github.com/hashicorp/hcp-sdk-go/httpclient"
 	"google.golang.org/grpc"
 
 	linkstatuspb "github.com/hashicorp/hcp-link/gen/proto/go/hashicorp/cloud/hcp_link/link_status/v1"
@@ -28,6 +36,12 @@ type link struct {
 	// running on.
 	*config.Config
 
+	// apiClient is a http.Client that can be used to call the HCP API.
+	apiClient *http.Client
+
+	// collector is used to collect node status information.
+	collector *nodestatusinternal.Collector
+
 	// listener is the listener of the Link SCADA capability.
 	listener net.Listener
 
@@ -46,8 +60,23 @@ func New(config *config.Config) (Link, error) {
 		return nil, fmt.Errorf("failed to initialize link library: config must be provided")
 	}
 
+	// Use the HCP SDK to prepare a transport
+	runtime, err := httpclient.New(httpclient.Config{HCPConfig: config.HCPConfig, SourceChannel: "link"})
+	if err != nil {
+		return nil, fmt.Errorf("failed to prepare API client transport: %w", err)
+	}
+
+	// Configure a http client with the transport
+	apiClient := cleanhttp.DefaultClient()
+	apiClient.Transport = runtime.Transport
+
 	return &link{
-		Config: config,
+		Config:    config,
+		apiClient: apiClient,
+		collector: &nodestatusinternal.Collector{
+
+			Config: config,
+		},
 	}, nil
 }
 
@@ -85,7 +114,7 @@ func (l *link) Start() error {
 	// Handle NodeStatus requests, if a node status reporter has been registered
 	if l.NodeStatusReporter != nil {
 		nodestatuspb.RegisterNodeStatusServiceServer(l.grpcServer, &nodestatusinternal.Service{
-			Config: l.Config,
+			Collector: l.collector,
 		})
 	}
 
@@ -130,6 +159,72 @@ func (l *link) Stop() error {
 
 	// Mark Link as stopped
 	l.running = false
+
+	return nil
+}
+
+// ReportNodeStatus will get the most recent node status information from the
+// configured node status reporter and push it to HCP.
+//
+// This function only needs to be invoked in situations where it is important
+// that the node status is reported right away. HCP will regularly poll for node
+// status information.
+func (l *link) ReportNodeStatus(ctx context.Context) error {
+	// Get the node status
+	status, err := l.collector.CollectPb(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to collect node status: %w", err)
+	}
+
+	// Marshal the node status into a binary proto message
+	requestMessage, err := proto.Marshal(&nodestatuspb.SetNodeStatusRequest{NodeStatus: status})
+	if err != nil {
+		return fmt.Errorf("failed to marshal node status: %w", err)
+	}
+
+	// Determine the scheme
+	scheme := "https"
+	if l.HCPConfig.APITLSConfig() == nil {
+		scheme = "http"
+	}
+
+	// Build the URL
+	requestURL := url.URL{
+		Scheme: scheme,
+		Host:   l.HCPConfig.APIAddress(),
+		Path: path.Join(
+			"link/2022-06-04/status/organization",
+			l.Resource.Location.OrganizationID,
+			"project",
+			l.Resource.Location.ProjectID,
+			l.Resource.Type,
+			l.Resource.ID,
+			"node",
+			status.NodeId,
+		),
+	}
+
+	// Prepare the request
+	request, err := http.NewRequestWithContext(ctx, http.MethodPut, requestURL.String(), bytes.NewReader(requestMessage))
+	if err != nil {
+		return fmt.Errorf("failed to prepare request: %w", err)
+	}
+	request.Header.Set("Content-Type", "application/octet-stream")
+
+	// Call the API
+	response, err := l.apiClient.Do(request)
+	if err != nil {
+		return fmt.Errorf("failed to set node status: %w", err)
+	}
+	defer response.Body.Close()
+
+	// Check if the call was successful
+	if response.StatusCode != http.StatusOK {
+		body := make([]byte, 0, 256)
+		_, _ = response.Body.Read(body)
+
+		return fmt.Errorf("received non 200 response: %d, %v", response.StatusCode, string(body))
+	}
 
 	return nil
 }

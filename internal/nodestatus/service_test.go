@@ -40,10 +40,12 @@ func TestNodeStatusService_GetNodeStatus(t *testing.T) {
 	}
 
 	service := &Service{
-		Config: &config.Config{
-			NodeID:             nodeID,
-			NodeVersion:        nodeVersion,
-			NodeStatusReporter: reporter,
+		Collector: &Collector{
+			Config: &config.Config{
+				NodeID:             nodeID,
+				NodeVersion:        nodeVersion,
+				NodeStatusReporter: reporter,
+			},
 		},
 	}
 
