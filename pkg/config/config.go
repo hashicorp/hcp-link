@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/hcp-scada-provider"
+	scada "github.com/hashicorp/hcp-scada-provider"
 	cloud "github.com/hashicorp/hcp-sdk-go/clients/cloud-shared/v1/models"
 	sdk "github.com/hashicorp/hcp-sdk-go/config"
 
