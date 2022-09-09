@@ -93,8 +93,10 @@ func (l *link) Start() error {
 	}
 
 	// Configure Link specific meta-data
-	l.SCADAProvider.SetMetaValue(metaDataNodeId, l.NodeID)
-	l.SCADAProvider.SetMetaValue(metaDataNodeVersion, l.NodeVersion)
+	l.SCADAProvider.UpdateMeta(map[string]string{
+		metaDataNodeId:      l.NodeID,
+		metaDataNodeVersion: l.NodeVersion,
+	})
 
 	// Start listening on Link capability
 	listener, err := l.SCADAProvider.Listen(Capability)
@@ -141,9 +143,8 @@ func (l *link) Stop() error {
 		return nil
 	}
 
-	// Clear Link specific meta-data
-	l.SCADAProvider.SetMetaValue(metaDataNodeId, "")
-	l.SCADAProvider.SetMetaValue(metaDataNodeVersion, "")
+	// TODO: Clear Link specific meta-data after scada-provider lib provides capability to delete metadata.
+	// This isn't a problem for now since `Start() above will reset these values
 
 	// Stop the gRPC server
 	l.grpcServer.Stop()
