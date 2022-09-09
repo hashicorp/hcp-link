@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/google/uuid v1.1.2
 	github.com/hashicorp/go-hclog v1.2.1
-	github.com/hashicorp/hcp-sdk-go v0.19.1-0.20220622092037-0cc7d3a5b743
+	github.com/hashicorp/hcp-sdk-go v0.22.0
 	github.com/stretchr/testify v1.7.2
 	google.golang.org/grpc v1.47.0
 )
@@ -16,6 +16,9 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/net-rpc-msgpackrpc v0.0.0-20151116020338-a14192a58a69 // indirect
 	github.com/hashicorp/yamux v0.0.0-20211028200310-0bc27b27de87 // indirect
+	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db // indirect
+	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966 // indirect
+	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208 // indirect
 	google.golang.org/genproto v0.0.0-20200825200019-8632dd797987 // indirect
 )
 
@@ -38,7 +41,7 @@ require (
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/protobuf v1.5.2
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
-	github.com/hashicorp/hcp-scada-provider v0.0.0-20220622120244-d8bf2e995a60
+	github.com/hashicorp/hcp-scada-provider v0.1.0
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
