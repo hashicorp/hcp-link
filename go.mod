@@ -40,7 +40,7 @@ require (
 	github.com/go-openapi/validate v0.20.2 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/protobuf v1.5.2
-	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
+	github.com/hashicorp/go-cleanhttp v0.5.2
 	github.com/hashicorp/hcp-scada-provider v0.1.0
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
@@ -54,7 +54,7 @@ require (
 	golang.org/x/sys v0.0.0-20220503163025-988cb79eb6c6 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/appengine v1.6.6 // indirect
-	google.golang.org/protobuf v1.27.1 // indirect
+	google.golang.org/protobuf v1.27.1
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
