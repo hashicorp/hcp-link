@@ -6,7 +6,6 @@ on:
       - v*
     branches:
       - main
-      - jasonpilz/add-linting
   pull_request:
 
 permissions:
