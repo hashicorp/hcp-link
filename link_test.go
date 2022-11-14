@@ -76,7 +76,7 @@ func TestLink(t *testing.T) {
 		expectedNodeID := "IDToExpect"
 		scadaProvider := idleSCADAProvider()
 
-		givenLink, err := New(&config.Config{
+		givenLink, _ := New(&config.Config{
 			NodeID:      expectedNodeID,
 			NodeVersion: expectedNodeVersion,
 			Resource: models.HashicorpCloudLocationLink{
@@ -92,7 +92,7 @@ func TestLink(t *testing.T) {
 			Logger:        hclog.Default(),
 		})
 
-		err = givenLink.Start()
+		err := givenLink.Start()
 
 		r := require.New(t)
 		r.NoError(err)
@@ -106,14 +106,14 @@ func TestLink(t *testing.T) {
 
 		scadaProvider := idleSCADAProvider()
 
-		givenLink, err := New(&config.Config{
+		givenLink, _ := New(&config.Config{
 			Resource:      models.HashicorpCloudLocationLink{},
 			HCPConfig:     stubHCPConfig{},
 			SCADAProvider: scadaProvider,
 			Logger:        hclog.Default(),
 		})
 
-		err = givenLink.Start()
+		err := givenLink.Start()
 		r.NoError(err)
 
 		err = givenLink.Stop()
