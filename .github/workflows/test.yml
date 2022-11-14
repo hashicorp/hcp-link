@@ -1,0 +1,38 @@
+name: Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          cache: true
+          go-version-file: 'go.mod'
+          cache-dependency-path: go.sum
+
+      - name: Install Dependencies
+        run: |
+          go mod download
+          go mod tidy
+
+      - name: Run Tests
+        run: make test-ci
+
+      - name: Upload Coverage Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test Coverage
+          path: coverage.html

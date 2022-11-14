@@ -14,11 +14,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
 	scada "github.com/hashicorp/hcp-scada-provider"
+	"github.com/hashicorp/hcp-sdk-go/clients/cloud-shared/v1/models"
 	sdk "github.com/hashicorp/hcp-sdk-go/config"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/structpb"
-
-	"github.com/hashicorp/hcp-sdk-go/clients/cloud-shared/v1/models"
 
 	pb "github.com/hashicorp/hcp-link/gen/proto/go/hashicorp/cloud/hcp_link/node_status/v1"
 	nodestatusinternal "github.com/hashicorp/hcp-link/internal/nodestatus"
