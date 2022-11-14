@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	requirepkg "github.com/stretchr/testify/require"
+	"google.golang.org/grpc/codes"
+	grpcstatus "google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/structpb"
@@ -26,13 +28,8 @@ func (s *stubNodeStatusReporter) GetNodeStatus(_ context.Context) (nodestatus.No
 	}, nil
 }
 
-func TestNodeStatusService_GetNodeStatus(t *testing.T) {
+func TestNodeStatusService_GetNodeStatus_Success(t *testing.T) {
 	require := requirepkg.New(t)
-
-	nodeID := "my-node"
-	nodeVersion := "1.2.3"
-	statusVersion := uint32(2)
-	statusMessage := structpb.NewStringValue("status")
 
 	reporter := &stubNodeStatusReporter{
 		version: statusVersion,
@@ -49,7 +46,7 @@ func TestNodeStatusService_GetNodeStatus(t *testing.T) {
 		},
 	}
 
-	status, err := service.GetNodeStatus(context.Background(), nil)
+	status, err := service.GetNodeStatus(bgContext, nil)
 	require.NoError(err)
 
 	nodeStatus := status.NodeStatus
@@ -66,4 +63,23 @@ func TestNodeStatusService_GetNodeStatus(t *testing.T) {
 	require.NoError(err)
 
 	require.Equal(statusMessage.String(), resultStatusMessage.String())
+
+}
+
+func TestNodeStatusService_GetNodeStatus_Error(t *testing.T) {
+	require := requirepkg.New(t)
+
+	service := &Service{
+		Collector: &Collector{
+			Config: &config.Config{
+				NodeID:             nodeID,
+				NodeVersion:        nodeVersion,
+				NodeStatusReporter: nil,
+			},
+		},
+	}
+
+	_, err := service.GetNodeStatus(bgContext, nil)
+
+	require.Equal(grpcstatus.Error(codes.NotFound, "no node status reporter has been registered"), err)
 }

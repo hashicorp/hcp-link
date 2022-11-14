@@ -100,6 +100,25 @@ func TestLink(t *testing.T) {
 		r.Equal(expectedNodeID, scadaProvider.GetMeta()["link.node_id"])
 		r.Equal(expectedNodeVersion, scadaProvider.GetMeta()["link.node_version"])
 	})
+
+	t.Run("Link stops", func(t *testing.T) {
+		r := require.New(t)
+
+		scadaProvider := idleSCADAProvider()
+
+		givenLink, err := New(&config.Config{
+			Resource:      models.HashicorpCloudLocationLink{},
+			HCPConfig:     stubHCPConfig{},
+			SCADAProvider: scadaProvider,
+			Logger:        hclog.Default(),
+		})
+
+		err = givenLink.Start()
+		r.NoError(err)
+
+		err = givenLink.Stop()
+		r.NoError(err)
+	})
 }
 
 func idleSCADAProvider() scada.SCADAProvider {
