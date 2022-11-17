@@ -1,3 +1,4 @@
+// TODO Package linkstatus ...
 package linkstatus
 
 import (
