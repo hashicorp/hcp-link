@@ -1,4 +1,4 @@
-// Package link
+// Package link implements routines for self-managed resources to connect to HashiCorp Cloud Platform (HCP).
 package link
 
 import (
@@ -143,9 +143,6 @@ func (l *link) Stop() error {
 	if !l.running {
 		return nil
 	}
-
-	// TODO: Clear Link specific meta-data after scada-provider lib provides capability to delete metadata.
-	// This isn't a problem for now since `Start() above will reset these values
 
 	// Stop the gRPC server
 	l.grpcServer.Stop()
