@@ -1,3 +1,5 @@
+// Package nodestatus contains the interface that needs to be implements for a self-managed resource to report
+// inforamtion to HashiCorp Cloud Platform (HCP).
 package nodestatus
 
 import (

@@ -1,3 +1,4 @@
+// Package resource provides various routines related to a resource.
 package resource
 
 import (
@@ -6,6 +7,7 @@ import (
 	cloud "github.com/hashicorp/hcp-sdk-go/clients/cloud-shared/v1/models"
 )
 
+// Validate will validate that the Link configuration is valid by making sure that Location, Type and ID are provided.
 func Validate(resource cloud.HashicorpCloudLocationLink) error {
 	if resource.Location == nil {
 		return fmt.Errorf("missing resource location")

@@ -1,3 +1,5 @@
+// Package linkstatus provides a gRPC service that allows HashiCorp Cloud Platform (HCP) to query the status of the
+// link library.
 package linkstatus
 
 import (
@@ -11,6 +13,7 @@ const (
 	linkStatusVersion = "0.0.1"
 )
 
+// gRPC service to reports the status of the link library
 type Service struct {
 	// Config contains all dependencies as well as information about the node
 	// Link is running on.

@@ -1,3 +1,5 @@
+// Package config contains the configuration required for a self-managed resource to connect to HashiCorp Cloud
+// Platform (HCP).
 package config
 
 import (
@@ -42,7 +44,8 @@ type Config struct {
 	Logger hclog.Logger
 }
 
-// Validate will validate the Link configuration.
+// Validate will validate the Link configuration. It ensures that the specified Resource is valid and that all
+// fields are provided.
 func (c *Config) Validate() error {
 	err := resource.Validate(c.Resource)
 	if err != nil {
