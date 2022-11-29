@@ -11,11 +11,11 @@ HCP Link is used internally at HashiCorp.
 
 ## Where to go
 
-We encourage you to consult [HashiCorp Community Guidelines](https://www.hashicorp.com/community-guidelines) before contributing to this project.
+We encourage you to consult [HashiCorp Community Guidelines](https://www.hashicorp.com/community-guidelines).
 
 ## How to contribute
 
-Thanks for considering contributing to this project. Unfortunately, HashiCorp does not accept new contribution on this project.
+Thanks for considering contributing to this project. Unfortunately, HashiCorp does not currently accept new contributions on this project.
 
 ## License
 
