@@ -21,3 +21,4 @@ Thanks for considering contributing to this project. Unfortunately, HashiCorp do
 
 This code is released under the Mozilla Public License 2.0. Please see [LICENSE](https://github.com/hashicorp/terraform-aws-hcp-consul/blob/main/LICENSE) for more details.
 
+test
