@@ -6,7 +6,7 @@ with changes will be documented here.
 Minor maintenance release.
 
 ### Changed
-- Upgrade `hcp-scada-broker` to `v0.2.2`
+- Upgrade `hcp-scada-provider` to `v0.2.2`
 
 ## 0.1.0 (Nov 30, 2022)
 First version of the library providing initial logic for reporting vault node status.
