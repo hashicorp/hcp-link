@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package config contains the configuration required for a self-managed resource to connect to HashiCorp Cloud
 // Platform (HCP).
 package config

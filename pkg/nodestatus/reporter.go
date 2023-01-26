@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // Package nodestatus contains the interface that needs to be implements for a self-managed resource to report
 // inforamtion to HashiCorp Cloud Platform (HCP).
 package nodestatus
