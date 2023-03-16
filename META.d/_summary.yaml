@@ -1,0 +1,16 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
+schema: 1.1
+
+partition: hcp
+category: service
+
+summary:
+  owner: team-cloud-platform-systems
+  description: |
+    Golang library used to connect self-managed resources to HashiCorp Cloud Platform (HCP).
+
+  visibility: external
+  auth_methods: |
+    Internal network access required.
