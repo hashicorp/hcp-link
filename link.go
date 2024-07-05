@@ -16,6 +16,7 @@ import (
 
 	"github.com/golang/protobuf/proto"
 	"github.com/hashicorp/go-cleanhttp"
+	provider "github.com/hashicorp/hcp-scada-provider"
 	"github.com/hashicorp/hcp-sdk-go/httpclient"
 	"google.golang.org/grpc"
 
@@ -97,9 +98,12 @@ func (l *link) Start() error {
 	}
 
 	// Configure Link specific meta-data
-	l.SCADAProvider.UpdateMeta(map[string]string{
-		metaDataNodeId:      l.NodeID,
-		metaDataNodeVersion: l.NodeVersion,
+	l.SCADAProvider.AddMeta(provider.Meta{
+		Key:   metaDataNodeId,
+		Value: l.NodeID,
+	}, provider.Meta{
+		Key:   metaDataNodeVersion,
+		Value: l.NodeVersion,
 	})
 
 	// Start listening on Link capability
@@ -146,6 +150,8 @@ func (l *link) Stop() error {
 	if !l.running {
 		return nil
 	}
+
+	l.SCADAProvider.DeleteMeta(metaDataNodeId, metaDataNodeVersion)
 
 	// Stop the gRPC server
 	l.grpcServer.Stop()
